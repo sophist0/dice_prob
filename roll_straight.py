@@ -117,7 +117,7 @@ class SimTrial:
                 nseq.append(int(val))
         return nseq
 
-    def run(self):
+    def run(self, dice):
         roll = random.choices([1, 2, 3, 4, 5, 6], k=dice)
         for val in self.target_seq:
             if self._check_val_in_roll(val, roll):
@@ -136,30 +136,38 @@ class SimTrial:
             if self._check_seq1_in_seq2_out(seq1, seq2, roll):
                 self.data.seq_stats[label] += 1
 
+class DiceSim:
+    def __init__(self, trials, seq, dvec):
+        self.dice_vec = dvec
+        self.params = SimParams(trials, seq)
+
+    def run_trials_for_n_dice(self, dice):
+        data = SimData(self.params, dice)
+        trial = SimTrial(seq, data)
+        for x in range(self.params.trials):
+            trial.run(dice)
+
+        data.display_results()
+        return data
+
+    def run_sim(self):
+        seq_prob = []
+        for dice in self.dice_vec:
+            data = self.run_trials_for_n_dice(dice)
+            seq_prob.append(data.seq_stats["1,2_not_"]/trials)
+        return seq_prob
+
 ########################################################################
 # Main
 ########################################################################
-
-def run_trials_for_n_dice(sim_params, dice):
-
-    data = SimData(sim_params, dice)
-    trial = SimTrial(seq, data)
-    for x in range(sim_params.trials):
-        trial.run()
-
-    data.display_results()
-    return data
 
 # Estimate the probability of rolling a straight
 dvec = list(range(1, 11))
 trials = 100000
 seq = list(range(1, 3))
 
-sim_params = SimParams(trials, seq)
-seq_prob = []
-for dice in dvec:
-    data = run_trials_for_n_dice(sim_params, dice)
-    seq_prob.append(data.seq_stats["1,2_not_"]/trials)
+sim = DiceSim(trials, seq, dvec)
+seq_prob = sim.run_sim()
 
 ########################################
 # plot
