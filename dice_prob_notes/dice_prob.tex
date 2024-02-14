@@ -1,0 +1,206 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{gensymb}
+\usepackage{verbatim}
+%\usepackage{subfig}
+\usepackage{mathtools}
+\usepackage{mathdefs}
+\usepackage{placeins}
+\usepackage{float}
+
+\usepackage{amsthm}
+\usepackage{graphicx}
+%\usepackage{subfigure}
+\usepackage{mathdefs}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{kbordermatrix}
+\usepackage{mathdefs}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\newtheorem{remark}{Remark}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{fact}{Fact}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\assref}[1]{Ass.~\ref{ass:#1}}
+\newcommand{\clmref}[1]{Claim~\ref{clm:#1}}
+\newcommand{\conref}[1]{Conj.~\ref{con:#1}}
+\newcommand{\corref}[1]{Cor.~\ref{cor:#1}}
+\newcommand{\defref}[1]{Def.~\ref{def:#1}}
+\newcommand{\exaref}[1]{Ex.~\ref{exa:#1}}
+\newcommand{\facref}[1]{Fact~\ref{fac:#1}}
+\newcommand{\lemref}[1]{Lem.~\ref{lem:#1}}
+\newcommand{\prpref}[1]{Prop.~\ref{prp:#1}}
+\newcommand{\thmref}[1]{Thm.~\ref{thm:#1}}
+\newcommand{\eqnref}[1]{(\ref{eq:#1})}
+\newcommand{\secref}[1]{\S\ref{sec:#1}}
+\newcommand{\appref}[1]{App.~\ref{app:#1}}
+\newcommand{\figref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\tabref}[1]{Table~\ref{tab:#1}}
+\newcommand{\algoref}[1]{Alg.~\ref{alg:#1}}
+\newcommand{\remref}[1]{Remark~\ref{rem:#1}}
+
+\hypersetup{colorlinks=false}
+\hypersetup{colorlinks,citecolor=black,filecolor=black,linkcolor=black,urlcolor=black}\label{sr_1}
+
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% disable indent
+\setlength\parindent{0pt}
+
+\title{Dice Probability}
+\author{Jonathan Stokes}
+
+\begin{document}
+\maketitle
+
+\hrulefill\\
+
+ADD: How is this related to the birthday problem????!!!!\\
+
+What is the probability of rolling a $1$ and a $2$ when rolling $3$ dice? First lets define the following events.
+\begin{equation}
+A \text{: 1 does appear in a roll of 3 dice.}
+\end{equation}
+\begin{equation}
+B \text{: 2 does appear in a roll of 3 dice.}
+\end{equation}
+
+To find the probability of events $A$ and $B$ we need to find the probability of $\neg A$ and $\neg B$ which is the probability of rolling any of the other $5$ dice faces of the $3$ independent dice. Therefore
+\begin{equation}
+P(\neg A) = P(\neg B) = \left(\frac{5}{6}\right)^3
+\label{eq:prob_not_one}
+\end{equation}
+
+and by analogy the probability of not rolling a $1$ and a $2$ is
+\begin{equation}
+P(\neg A \cap \neg B) = \left(\frac{4}{6}\right)^3
+\label{eq:prob_one_and_two}
+\end{equation}
+
+It follows from \cref{eq:prob_not_one} that the probability of rolling either a $1$ or a $2$ is
+\begin{equation}
+P(A) = P(B) = 1-P(A) = 1 - \left(\frac{5}{6}\right)^3 = \frac{91}{216}
+\end{equation}
+To answer our initial question above we need to find $P(A \cap B)$.\\
+
+Given \cref{eq:prob_one_and_two} the conditional probability of not rolling a $1$ given not rolling a $2$ is
+\begin{equation}
+P(\neg A| \neg B) = \frac{P(\neg A \cap \neg B)}{P(\neg B)} = \frac{\left(\frac{4}{6}\right)^3}{\left(\frac{5}{6}\right)^3} = \left(\frac{4}{5}\right)^3
+\label{eq:not_one_given_not_two}
+\end{equation}
+and given the law of total probability
+\begin{equation}
+P(A) = P(A|B)P(B)+P(A|\neg B)P(\neg B)
+\end{equation}
+Therefore from \cref{eq:not_one_given_not_two} and since $P(A|\neg B) + P(\neg A|\neg B) = 1$,
+\begin{equation}
+P(A|B) = \frac{P(A) - P(A|\neg B)P(\neg B)}{P(B)} = \frac{\left(1-\left(\frac{5}{6}\right)^3\right) - \left(1-\left(\frac{4}{6}\right)^3\right)\left(\frac{5}{6}\right)^3}{1-\left(\frac{5}{6}\right)^3} = \frac{30}{91}
+\end{equation}
+and it follows that
+\begin{equation}
+P(A \cap B) = P(A|B)P(B) = \left(\frac{30}{91}\right) \left(\frac{91}{216}\right) = \frac{5}{36} \approx 0.138
+\end{equation}
+
+Now does this generalize for $n\geq 2$ dice rolled? Lets first define the following events
+\begin{equation}
+A_n \text{: 1 does appear in a roll of $n$ dice.}
+\end{equation}
+\begin{equation}
+B_n \text{: 2 does appear in a roll of $n$ dice.}
+\end{equation}
+
+\begin{equation}
+P(A_n \cap B_n) = \left(\frac{\left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{6}\right)^n\right)\left(\frac{5}{6}\right)^n}{1-\left(\frac{5}{6}\right)^n}\right) \left(1 - \left(\frac{5}{6}\right)^n\right)
+\end{equation}
+and as $n\to\infty$, $P(A_n \cap B_n) \to 1$ as expected.\\
+
+\textbf{Below seems overly complicated and probably wrong. Perhaps try making the recursion more explicit. Show how m=3 is build from m=2? Also check that m=3 solution is correct in simulations.}\\
+
+Now say we want to know the probability of rolling the sequence of dice $1$ to $m$ where $m\in\{2,3,4,5\}$. Given $n>m$ (DOES THIS  WORK FOR n=m????, what happens if m=6???????) lets define the events
+\begin{equation}
+A_{n,i} \text{: $i$ does appear in a roll of $n$ dice.}
+\end{equation}
+for $i \in \{1\ldots m\}$.\\
+
+\begin{equation}
+P(\neg A_{n,i}) = \left( \frac{5}{6} \right)^n
+\label{eq:tmp2}
+\end{equation}
+
+\begin{equation}
+P\left(\bigcap_{i=1}^m \neg A_{n,i}\right) = \left( \frac{6-m}{6} \right)^n
+\label{eq:tmp_1}
+\end{equation}
+
+Now expanding the conditional probability \textbf{(that is not the right term)} we know that.
+\begin{equation}
+P\left(\bigcap_{i=1}^m A_{n,i}\right) = P\left(A_{n,1}|\bigcap_{i=2}^m A_{n,i}\right)P\left(\bigcap_{i=2}^m A_{n,i}\right)
+\label{eq:tmp_3}
+\end{equation}
+
+\begin{equation}
+= \prod_{j-1}^m P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right)
+\end{equation}
+
+and we also know from above that $P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right)$ has the form
+\begin{equation}
+P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right) = \frac{P(A_{n,j}) - P(A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i})\left(1-P\left(\bigcap_{i=j+1}^m \neg A_{n,j}\right)\right)}{\left(1-P\left(\bigcap_{i=j+1}^m A_{n,j}\right)\right)}
+\label{eq:tmp4}
+\end{equation}
+
+Now from \cref{eq:tmp_1} we can see that
+
+\begin{equation}
+\left( 1-P\left(\bigcap_{i=j+1}^m \neg A_{n,j}\right) \right) = \left(\frac{6-m+i}{6}\right)^n
+\end{equation}
+and from \cref{eq:tmp2}
+\begin{equation}
+P(A_{n,j}) = 1-\left( \frac{5}{6} \right)^n
+\end{equation}
+also
+\begin{equation}
+1-P\left(\bigcap_{i=j+1}^m A_{n,j}\right) = 1-P\left(\bigcap_{i=1}^{c=m-j} A_{n,i}\right)
+\end{equation}
+setting up a recursion by substitution into \cref{eq:tmp_3} with $c=2$ as the base case which we solved for above. This leaves
+
+\begin{equation}
+P(A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i}) = 1 - P(\neg A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i})
+\end{equation}
+
+\begin{equation}
+= 1- \frac{P(\bigcap_{i=j}^m \neg A_{n,i})}{P(\neg A_{n,j})}
+\end{equation}
+
+\begin{equation}
+= 1- \frac{\left(\frac{6-m+j}{6}\right)^n}{\left(\frac{5}{6}\right)^n}
+\end{equation}
+
+\begin{equation}
+= 1- \left(\frac{6-m+j}{5}\right)^n
+\end{equation}
+substitute all this back into \cref{eq:tmp4} and the result of that into \cref{eq:tmp_3}.
+
+\end{document}
