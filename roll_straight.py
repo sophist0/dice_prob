@@ -24,7 +24,7 @@ class SimParams:
 
                 in_seq = []
                 out_seq = []
-                for val in seq:
+                for val in self.seq:
                     if val in combo:
                         in_seq.append(str(val))
                     else:
@@ -164,8 +164,8 @@ class DiceSim:
         self.sim_data = {}
 
     def run_trials_for_n_dice(self, dice):
-        data = SimData(seq, self.params, dice)
-        trial = SimTrial(seq, data)
+        data = SimData(self.seq, self.params, dice)
+        trial = SimTrial(self.seq, data)
         for x in range(self.params.trials):
             trial.run(dice)
 
@@ -175,7 +175,7 @@ class DiceSim:
     def _save_sim_data(self, seq_label, max_dice):
         data_dir = "data/"
         data_path = data_dir + "m_dice_" + str(max_dice) + "_" + seq_label[0] + ".p"
-        data_file = open(data_path, 'ab')
+        data_file = open(data_path, 'wb')
         pickle.dump(self.sim_data, data_file)
         data_file.close()
 
@@ -185,7 +185,7 @@ class DiceSim:
         for dice in self.dice_vec:
             data = self.run_trials_for_n_dice(dice)
             seq_len_label = data.find_seq_len(len_seq)
-            seq_prob.append(data.seq_stats[seq_len_label[0]]/trials)
+            seq_prob.append(data.seq_stats[seq_len_label[0]]/data.trials)
 
             sim_label = str(dice) + "_dice"
             self.sim_data[sim_label] = data
@@ -194,25 +194,29 @@ class DiceSim:
         self._save_sim_data(seq_len_label, max_dice)
         return seq_prob
 
-########################################################################
-# Main
-########################################################################
+def main():
+    ########################################################################
+    # Main
+    ########################################################################
 
-# Estimate the probability of rolling a straight
-dvec = list(range(1, 21))
-trials = 100000
-seq = list(range(1, 3))
+    # Estimate the probability of rolling a sequence
+    dvec = list(range(0, 21))
+    trials = 100000
+    seq = list(range(1, 3))
 
-sim = DiceSim(trials, seq, dvec)
-seq_prob = sim.run_sim()
+    sim = DiceSim(trials, seq, dvec)
+    seq_prob = sim.run_sim()
 
-########################################
-# plot
-########################################
-char_seq = list(map(str, seq))
-plt.plot(dvec, seq_prob)
-plt.xlabel("dice rolled")
-plt.ylabel("seq probability")
-plt.title("seq: " + ",".join(char_seq))
-plt.legend(["Simulation Results"])
-plt.show()
+    ########################################
+    # plot
+    ########################################
+    char_seq = list(map(str, seq))
+    plt.plot(dvec, seq_prob)
+    plt.xlabel("dice rolled")
+    plt.ylabel("seq probability")
+    plt.title("seq: " + ",".join(char_seq))
+    plt.legend(["Simulation Results"])
+    plt.show()
+
+if __name__ == '__main__':
+    main()
