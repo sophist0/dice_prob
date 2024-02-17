@@ -70,7 +70,7 @@
 % disable indent
 \setlength\parindent{0pt}
 
-\title{Dice Probability}
+\title{Probability of Dice Sequences}
 \author{Jonathan Stokes}
 
 \begin{document}
@@ -78,7 +78,52 @@
 
 \hrulefill\\
 
-ADD: How is this related to the birthday problem????!!!!\\
+In rolling $6$ dice what is the probability of rolling $1,2,3,4$? Or more generally in rolling $n$ dice what is the probability for rolling a length $m$ sequence starting with $1$?
+It is straight forward to estimate the probability of rolling these sequences using $100,000$ monte carlo simulations per dice count, see \cref{fig:monte_carlo_sim}.\\
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figs/monte_carlo_seq_prob.png}
+    \caption{}
+    \label{fig:monte_carlo_sim}
+\end{figure}
+
+At first this looks similar the probability of drawing a straight in $5$ card draw poker. If one draws a straight in $5$ card draw poker including a royal flush there are 
+
+\begin{enumerate}
+\item $\binom{10}{1}$ ways to choose the low card in the straight, recalling that the ace may be $1$ or follow the king in a straight. 
+\item $\binom{4}{1}^5$ ways to select the card suits.
+\end{enumerate}
+and generally there are $\binom{52}{5}$ ways of drawing $5$ cards. So the probability of drawing the straight in $5$ card draw poker is
+\begin{equation}
+\frac{\binom{10}{1}\binom{4}{1}^5}{\binom{52}{5}} \approx 0.00394
+\end{equation}
+
+So generalizing the probability of drawing a length $n$ straight for $n\in\{2 \ldots 13\}$ is 
+\begin{equation}
+\frac{\binom{15-n}{1}\binom{4}{1}^n}{\binom{52}{n}}
+\end{equation}
+
+Now lets try applying this same logic to the probability of rolling a length $m$ sequence in a roll of $n$ dice for $n\geq m$ dropping the requirement that the sequence start at $1$.
+\begin{enumerate}
+\item $\binom{7-m}{1}$ ways to choose the low number in the sequence.
+\item $\binom{6}{1}^{n-m}$ ways to roll the remaining dice.
+\end{enumerate}
+and generally there are $\binom{6}{1}^n$ ways of rolling $n$ dice. Therefore the probability of rolling a length $m$ sequence in a roll of $n$ dice is,
+\begin{equation}
+\frac{\binom{7-m}{1}\binom{6}{1}^{n-m}}{\binom{6}{1}^n} = \frac{\binom{7-m}{1}}{\binom{6}{1}^m} = \frac{7-m}{6^m}
+\label{eq:wrong_eq}
+\end{equation}
+which looking at \cref{fig:monte_carlo_sim} is clearly incorrect for $m=6$ and sequence $1,2,3,4,5,6$ as \cref{eq:wrong_eq} is constant in $n$ the number of dice rolled.\\
+
+What did we do wrong? The term $\binom{7-m}{1}$ implicitly assumes that on any roll of the dice there are always $6$ different numbers to choose from. In the case of cards this type of assumption is correct 
+since every deck of has $13$ distinct values ($14$ if the ace can be low and high). However in the case of a roll of $6$ dice we may not roll a $1$ leaving only $5$ numbers to choose from in which case there
+are not $\binom{7-m}{1}$ ways to choose the lowest number in the sequence.\\
+
+\hrulefill\\
+
+So what is the solution? Well the short answer is that I have not worked out a closed for solution for the general case of a sequence of length $m$ starting at $1$. However below I give a solution
+for the case where $m=2$.\\
 
 What is the probability of rolling a $1$ and a $2$ when rolling $3$ dice? First lets define the following events.
 \begin{equation}
@@ -117,12 +162,13 @@ P(A) = P(A|B)P(B)+P(A|\neg B)P(\neg B)
 \end{equation}
 Therefore from \cref{eq:not_one_given_not_two} and since $P(A|\neg B) + P(\neg A|\neg B) = 1$,
 \begin{equation}
-P(A|B) = \frac{P(A) - P(A|\neg B)P(\neg B)}{P(B)} = \frac{\left(1-\left(\frac{5}{6}\right)^3\right) - \left(1-\left(\frac{4}{6}\right)^3\right)\left(\frac{5}{6}\right)^3}{1-\left(\frac{5}{6}\right)^3} = \frac{30}{91}
+P(A|B) = \frac{P(A) - P(A|\neg B)P(\neg B)}{P(B)} = \frac{\left(1-\left(\frac{5}{6}\right)^3\right) - \left(1-\left(\frac{4}{5}\right)^3\right)\left(\frac{5}{6}\right)^3}{1-\left(\frac{5}{6}\right)^3} = \frac{30}{91}
 \end{equation}
 and it follows that
 \begin{equation}
 P(A \cap B) = P(A|B)P(B) = \left(\frac{30}{91}\right) \left(\frac{91}{216}\right) = \frac{5}{36} \approx 0.138
 \end{equation}
+Looking at \cref{fig:monte_carlo_sim} this looks about right.\\
 
 Now does this generalize for $n\geq 2$ dice rolled? Lets first define the following events
 \begin{equation}
@@ -132,10 +178,22 @@ A_n \text{: 1 does appear in a roll of $n$ dice.}
 B_n \text{: 2 does appear in a roll of $n$ dice.}
 \end{equation}
 
-\begin{equation}
-P(A_n \cap B_n) = \left(\frac{\left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{6}\right)^n\right)\left(\frac{5}{6}\right)^n}{1-\left(\frac{5}{6}\right)^n}\right) \left(1 - \left(\frac{5}{6}\right)^n\right)
-\end{equation}
+\begin{align*}
+P(A_n \cap B_n) &= \left(\frac{\left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{5}\right)^n\right)\left(\frac{5}{6}\right)^n}{1-\left(\frac{5}{6}\right)^n}\right) \left(1 - \left(\frac{5}{6}\right)^n\right)\\
+                &=  \left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{5}\right)^n\right)\left(\frac{5}{6}\right)^n\\
+                &= 1 - 2\left(\frac{5}{6}\right)^n + \left(\frac{2}{3}\right)^n
+\end{align*}
 and as $n\to\infty$, $P(A_n \cap B_n) \to 1$ as expected.\\
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figs/compare_analytic_sim.png}
+    \caption{}
+    \label{fig:compare_analytic_sim}
+\end{figure}
+\cref{fig:compare_analytic_sim} compares the analytic and simulated results.
+
+\textbf{ADD plot for the analytical solution}\\
 
 \textbf{Below seems overly complicated and probably wrong. Perhaps try making the recursion more explicit. Show how m=3 is build from m=2? Also check that m=3 solution is correct in simulations.}\\
 
