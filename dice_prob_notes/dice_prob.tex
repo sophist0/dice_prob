@@ -215,7 +215,7 @@ for $i \in \{1\ldots m\}$.\\
 
 Now given \cref{eq:A_and_B_sol} and \cref{eq:A_and_B_and_C_sol} again by induction we can derive a closed form solution for the probability of a sequence of length $m$ starting at $1$ appearing in a given roll of dice as,
 \begin{equation}
-P\left(\bigcap_{i=0}^m A_{n,i}\right) = (-1)^i \binom{m}{i}\left( \frac{6-i}{6} \right)^n
+P\left(\bigcap_{i=0}^m A_{n,i}\right) = \sum_{i=0}^{m} (-1)^i \binom{m}{i}\left( \frac{6-i}{6} \right)^n
 \end{equation}
 
 Using this equation to compute the analytic probability of rolling a dice sequence starting at $1$ of length $m$ and comparing these to the simulated results gives.
