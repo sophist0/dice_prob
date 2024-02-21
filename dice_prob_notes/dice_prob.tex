@@ -152,25 +152,39 @@ P(A) = P(B) = 1-P(A) = 1 - \left(\frac{5}{6}\right)^3 = \frac{91}{216}
 To answer our initial question above we need to find $P(A \cap B)$.\\
 
 Given \cref{eq:prob_one_and_two} the conditional probability of not rolling a $1$ given not rolling a $2$ is
-\begin{equation}
-P(\neg A| \neg B) = \frac{P(\neg A \cap \neg B)}{P(\neg B)} = \frac{\left(\frac{4}{6}\right)^3}{\left(\frac{5}{6}\right)^3} = \left(\frac{4}{5}\right)^3
+\begin{align}
+P(\neg A| \neg B)   &= \frac{P(\neg A \cap \neg B)}{P(\neg B)} = \frac{\left(\frac{4}{6}\right)^3}{\left(\frac{5}{6}\right)^3} = \left(\frac{4}{5}\right)^3
 \label{eq:not_one_given_not_two}
-\end{equation}
+\end{align}
 and given the law of total probability
 \begin{equation}
 P(A) = P(A|B)P(B)+P(A|\neg B)P(\neg B)
 \end{equation}
 Therefore from \cref{eq:not_one_given_not_two} and since $P(A|\neg B) + P(\neg A|\neg B) = 1$,
-\begin{equation}
-P(A|B) = \frac{P(A) - P(A|\neg B)P(\neg B)}{P(B)} = \frac{\left(1-\left(\frac{5}{6}\right)^3\right) - \left(1-\left(\frac{4}{5}\right)^3\right)\left(\frac{5}{6}\right)^3}{1-\left(\frac{5}{6}\right)^3} = \frac{30}{91}
-\end{equation}
+\begin{align}
+P(A|B)  &= \frac{P(A) - P(A|\neg B)P(\neg B)}{P(B)}\\
+        &= \frac{P(A) - (1 - P(\neg A|\neg B))P(\neg B)}{P(B)}\\
+        &= \frac{\left(1-\left(\frac{5}{6}\right)^3\right) - \left(1-\left(\frac{4}{5}\right)^3\right)\left(\frac{5}{6}\right)^3}{1-\left(\frac{5}{6}\right)^3}
+        = \frac{30}{91}
+\label{eq:A_cond_B}
+\end{align}
 and it follows that
 \begin{equation}
 P(A \cap B) = P(A|B)P(B) = \left(\frac{30}{91}\right) \left(\frac{91}{216}\right) = \frac{5}{36} \approx 0.138
+\label{eq:A_and_B}
 \end{equation}
 Looking at \cref{fig:monte_carlo_sim} this looks about right.\\
 
-Now does this generalize for $n\geq 2$ dice rolled? Lets first define the following events
+Also notice given \cref{eq:A_cond_B} and \cref{eq:A_and_B} it follows that
+\begin{align}
+P(A \cap B)     &= P(A|B)P(B)\\
+                &= P(A) - P(A|\neg B) P(\neg B)\\
+                &= P(A) - (1 - P(\neg A|\neg B)) P(\neg B)\\
+                &= P(A) - P(\neg B) + P(\neg A \cap \neg B)
+\label{eq:reduced_A_and_B}
+\end{align}
+
+Now given \cref{eq:reduced_A_and_B} does this generalize for $n\geq 2$ dice rolled? Lets first define the following events
 \begin{equation}
 A_n \text{: 1 does appear in a roll of $n$ dice.}
 \end{equation}
@@ -179,9 +193,10 @@ B_n \text{: 2 does appear in a roll of $n$ dice.}
 \end{equation}
 
 \begin{align*}
-P(A_n \cap B_n) &= \left(\frac{\left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{5}\right)^n\right)\left(\frac{5}{6}\right)^n}{1-\left(\frac{5}{6}\right)^n}\right) \left(1 - \left(\frac{5}{6}\right)^n\right)\\
-                &=  \left(1-\left(\frac{5}{6}\right)^n\right) - \left(1-\left(\frac{4}{5}\right)^n\right)\left(\frac{5}{6}\right)^n\\
+P(A_n \cap B_n) &= P(A_n) - P(\neg B_n) + P(\neg A_n \cap \neg B_n)\\
+                &=  1-\left(\frac{5}{6}\right)^n -\left(\frac{5}{6}\right)^n + \left(\frac{4}{6}\right)^n\\
                 &= 1 - 2\left(\frac{5}{6}\right)^n + \left(\frac{2}{3}\right)^n
+\label{eq:A_and_B_sol}
 \end{align*}
 and as $n\to\infty$, $P(A_n \cap B_n) \to 1$ as expected.\\
 
@@ -191,74 +206,37 @@ and as $n\to\infty$, $P(A_n \cap B_n) \to 1$ as expected.\\
     \caption{}
     \label{fig:compare_analytic_sim}
 \end{figure}
-\cref{fig:compare_analytic_sim} compares the analytic and simulated results.
+\Cref{fig:compare_analytic_sim} compares the analytic and simulated results and as expected the simulated and analytical results are very close.\\
 
-\textbf{ADD plot for the analytical solution}\\
+\hrulefill\\
 
-\textbf{Below seems overly complicated and probably wrong. Perhaps try making the recursion more explicit. Show how m=3 is build from m=2? Also check that m=3 solution is correct in simulations.}\\
+Can this be generalized to the case of a length $m$ sequence? Lets first consider the case where $m=3$ In this case, replacing $B$ with $B \cap C$ \cref{eq:reduced_A_and_B} gives,\\
 
-Now say we want to know the probability of rolling the sequence of dice $1$ to $m$ where $m\in\{2,3,4,5\}$. Given $n>m$ (DOES THIS  WORK FOR n=m????, what happens if m=6???????) lets define the events
+\begin{align}
+P(A_n \cap B_n \cap C_n)    &= P(A_n) - P(\neg B_n) - P(\neg C_n)\\
+                            &+ P(\neg A_n \cap \neg B_n) + P(\neg A_n \cap \neg C_n) + P(\neg B_n \cap \neg C_n)\\ 
+                            &- P(\neg A_n \cap \neg B_n \cap \neg C_n)\\
+                            &= 1 - 3\left(\frac{5}{6}\right)^n + 3\left(\frac{4}{6}\right)^n - \left(\frac{3}{6}\right)^n
+\label{eq:A_and_B_and_C_sol}
+\end{align}
+Now given \cref{eq:A_and_B_sol} and \cref{eq:A_and_B_and_C_sol} by induction we can derive a closed form solution. Now say we want to know the probability of rolling the sequence of dice $1$ to $m$ where $m\in\{1,2,3,4,5,6\}$. Given $n\geq m$ lets define the events
 \begin{equation}
-A_{n,i} \text{: $i$ does appear in a roll of $n$ dice.}
+A_{n,i} \text{: $i$ appears in a roll of $n$ dice.}
 \end{equation}
 for $i \in \{1\ldots m\}$.\\
 
+So the probability of a sequence of length $m$ starting at $1$ appearing in a given roll of the dice is,
 \begin{equation}
-P(\neg A_{n,i}) = \left( \frac{5}{6} \right)^n
-\label{eq:tmp2}
+P\left(\bigcap_{i=0}^m A_{n,i}\right) = (-1)^i \binom{m}{i}\left( \frac{6-i}{6} \right)^n
 \end{equation}
 
-\begin{equation}
-P\left(\bigcap_{i=1}^m \neg A_{n,i}\right) = \left( \frac{6-m}{6} \right)^n
-\label{eq:tmp_1}
-\end{equation}
+Using this equation to compute the analytic probability of rolling a dice sequence starting at $1$ of length $m$ and comparing these to the simulated results gives.
 
-Now expanding the conditional probability \textbf{(that is not the right term)} we know that.
-\begin{equation}
-P\left(\bigcap_{i=1}^m A_{n,i}\right) = P\left(A_{n,1}|\bigcap_{i=2}^m A_{n,i}\right)P\left(\bigcap_{i=2}^m A_{n,i}\right)
-\label{eq:tmp_3}
-\end{equation}
-
-\begin{equation}
-= \prod_{j-1}^m P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right)
-\end{equation}
-
-and we also know from above that $P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right)$ has the form
-\begin{equation}
-P\left(A_{n,j}|\bigcap_{i=j+1}^m A_{n,j}\right) = \frac{P(A_{n,j}) - P(A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i})\left(1-P\left(\bigcap_{i=j+1}^m \neg A_{n,j}\right)\right)}{\left(1-P\left(\bigcap_{i=j+1}^m A_{n,j}\right)\right)}
-\label{eq:tmp4}
-\end{equation}
-
-Now from \cref{eq:tmp_1} we can see that
-
-\begin{equation}
-\left( 1-P\left(\bigcap_{i=j+1}^m \neg A_{n,j}\right) \right) = \left(\frac{6-m+i}{6}\right)^n
-\end{equation}
-and from \cref{eq:tmp2}
-\begin{equation}
-P(A_{n,j}) = 1-\left( \frac{5}{6} \right)^n
-\end{equation}
-also
-\begin{equation}
-1-P\left(\bigcap_{i=j+1}^m A_{n,j}\right) = 1-P\left(\bigcap_{i=1}^{c=m-j} A_{n,i}\right)
-\end{equation}
-setting up a recursion by substitution into \cref{eq:tmp_3} with $c=2$ as the base case which we solved for above. This leaves
-
-\begin{equation}
-P(A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i}) = 1 - P(\neg A_{n,j} | \bigcap_{i=j+1}^m \neg A_{n,i})
-\end{equation}
-
-\begin{equation}
-= 1- \frac{P(\bigcap_{i=j}^m \neg A_{n,i})}{P(\neg A_{n,j})}
-\end{equation}
-
-\begin{equation}
-= 1- \frac{\left(\frac{6-m+j}{6}\right)^n}{\left(\frac{5}{6}\right)^n}
-\end{equation}
-
-\begin{equation}
-= 1- \left(\frac{6-m+j}{5}\right)^n
-\end{equation}
-substitute all this back into \cref{eq:tmp4} and the result of that into \cref{eq:tmp_3}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figs/full_compare_analytic_sim.png}
+    \caption{}
+    \label{fig:full_compare_analytic_sim}
+\end{figure}
 
 \end{document}
