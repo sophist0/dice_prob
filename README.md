@@ -1,4 +1,4 @@
-# dice_prob
+# dice_seq_prob
 Working out the probability of rolling different dice sequences.
 
 A full write up is in dice_prob_notes/dice_prob.pdf
