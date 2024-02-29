@@ -1,7 +1,6 @@
 import random
 import pickle
 import itertools
-import matplotlib.pyplot as plt
 
 class SimParams:
     def __init__(self, trials, seq):
@@ -16,12 +15,8 @@ class SimParams:
 
     def _get_seq_stats(self, seq_combos):
         for n in range(len(seq_combos)):
-            print()
-            print("n=", n+1)
             n_combos = seq_combos[n]
             for combo in n_combos:
-                print(combo)
-
                 in_seq = []
                 out_seq = []
                 for val in self.seq:
@@ -73,24 +68,15 @@ class SimData:
         return seq_len_labels
 
     def display_results(self):
-        # Only works for the sequence 1,2
         print()
         print("########################################################################")
         print()
-        print("dice: ", self.dice)
-        print()
+        print("dice rolled: ", self.dice)
         print("probability 1: ", self.val_stats[1]["in_roll"]/self.trials)
-        print()
         print("probability not 1: ", self.val_stats[1]["not_in_roll"]/self.trials)
-        # print()
-        # print("probability 1 and not 2: ", self.seq_stats["1_not_2"]/self.val_stats[2]["not_in_roll"])
-
         seq_in_label = self.find_seq_len(len(self.seq))
-        print()
         print("probability " + seq_in_label[0] + ": ", self.seq_stats[seq_in_label[0]]/self.trials)
-
         seq_in_label = self.find_seq_len(0)
-        print()
         print("probability " + seq_in_label[0] + ": ", self.seq_stats[seq_in_label[0]]/self.trials)
         print()
 
@@ -130,12 +116,11 @@ class SimTrial:
         return passed
 
     def _str_list_2_seq(self, str_list):
-        # should be possible with map or lambda function
-        nseq = []
-        for val in str_list:
-            if val != ",":
-                nseq.append(int(val))
-        return nseq
+        if len(str_list) > 0:
+            tmp = str_list.split(",")
+            return list(map(int, tmp))
+        else:
+            return []
 
     def run(self, dice):
         roll = random.choices([1, 2, 3, 4, 5, 6], k=dice)
@@ -148,8 +133,6 @@ class SimTrial:
 
         for label in self.data.seq_stats.keys():
             slabel = label.split("_")
-
-            # should be possible with map or lambda function
             seq1 = self._str_list_2_seq(slabel[0])
             seq2 = self._str_list_2_seq(slabel[2])
 
@@ -203,20 +186,8 @@ def main():
     dvec = list(range(0, 21))
     trials = 100000
     seq = list(range(1, 3))
-
     sim = DiceSim(trials, seq, dvec)
-    seq_prob = sim.run_sim()
-
-    ########################################
-    # plot
-    ########################################
-    char_seq = list(map(str, seq))
-    plt.plot(dvec, seq_prob)
-    plt.xlabel("dice rolled")
-    plt.ylabel("seq probability")
-    plt.title("seq: " + ",".join(char_seq))
-    plt.legend(["Simulation Results"])
-    plt.show()
+    _ = sim.run_sim()
 
 if __name__ == '__main__':
     main()
