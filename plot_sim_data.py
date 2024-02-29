@@ -29,6 +29,7 @@ def main():
         plt.plot(dice_vec, prob_vec)
         legend_names.append("sim seq: " + "".join(char_seq))
 
+    plt.xticks(dice_vec,dice_vec)
     plt.xlabel("dice rolled")
     plt.ylabel("seq probability")
     plt.legend(legend_names)

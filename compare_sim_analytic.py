@@ -51,6 +51,7 @@ def main():
 
     analytic_legend = ["analyic seq: 1", "analyic seq: 1,2", "analyic seq: 1,2,3", "analyic seq: 1,2,3,4", "analyic seq: 1,2,3,4,5", "analyic seq: 1,2,3,4,5,6"]
 
+    plt.xticks(dice_vec,dice_vec)
     plt.xlabel("dice rolled")
     plt.ylabel("seq probability")
     plt.legend(legend_names + analytic_legend)
