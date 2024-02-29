@@ -7,8 +7,6 @@ class SimParams:
         self.trials = trials
         self.seq = seq
         self.val_stats = ["in_roll", "not_in_roll"]
-
-        # add seq_combo_labels (depend on the seq)
         self.seq_stats = []
         seq_combos = self._get_non_empty_combos()
         self._get_seq_stats(seq_combos)

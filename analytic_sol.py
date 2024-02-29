@@ -1,6 +1,5 @@
 import math
 from scipy.special import comb
-import matplotlib.pyplot as plt
 
 def compute_m_3():
     max_dice = 20
@@ -9,9 +8,8 @@ def compute_m_3():
     qvec = []
 
     for n in dvec:
-        q = 1 - 3*math.pow(5/6,n) + 3*math.pow(4/6,n) - math.pow(3/6,n)
+        q = 1 - 3*math.pow(5/6, n) + 3*math.pow(4/6, n) - math.pow(3/6, n)
         qvec.append(q)
-
     return qvec, dvec
 
 def analytic_sol(seq_end, max_dice):
