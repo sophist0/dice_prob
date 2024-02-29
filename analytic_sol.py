@@ -1,29 +1,6 @@
 import math
+from scipy.special import comb
 import matplotlib.pyplot as plt
-
-def compute_m_1():
-    max_dice = 20
-    min_dice = 1
-    dvec = list(range(min_dice, max_dice+1))
-    qvec = []
-
-    for n in dvec:
-        q = 1 - math.pow(5/6,n)
-        qvec.append(q)
-
-    return dvec, qvec
-
-def compute_m_2():
-    max_dice = 20
-    min_dice = 2
-    dvec = list(range(min_dice, max_dice+1))
-    qvec = []
-
-    for n in dvec:
-        q = 1 - 2*math.pow(5/6,n) + math.pow(4/6,n)
-        qvec.append(q)
-
-    return dvec, qvec
 
 def compute_m_3():
     max_dice = 20
@@ -35,52 +12,19 @@ def compute_m_3():
         q = 1 - 3*math.pow(5/6,n) + 3*math.pow(4/6,n) - math.pow(3/6,n)
         qvec.append(q)
 
-    return dvec, qvec
+    return qvec, dvec
 
-def compute_m_4():
-    max_dice = 20
-    min_dice = 4
+def analytic_sol(seq_end, max_dice):
+    min_dice = seq_end
     dvec = list(range(min_dice, max_dice+1))
     qvec = []
 
     for n in dvec:
-        q = 1 - 4*math.pow(5/6,n) + 6*math.pow(4/6,n) - 4*math.pow(3/6,n) + math.pow(2/6,n)
+        q = 0
+        for i in range(seq_end+1):
+            frac = (6-i)/6
+            c = comb(seq_end, i)
+            sign = math.pow(-1, i)
+            q += sign * c * math.pow(frac, n)
         qvec.append(q)
-
-    return dvec, qvec
-
-def compute_m_5():
-    max_dice = 20
-    min_dice = 5
-    dvec = list(range(min_dice, max_dice+1))
-    qvec = []
-
-    for n in dvec:
-        q = 1 - 5*math.pow(5/6,n) + 10*math.pow(4/6,n) - 10*math.pow(3/6,n) + 5*math.pow(2/6,n) + math.pow(1/6,n)
-        qvec.append(q)
-
-    return dvec, qvec
-
-def compute_m_6():
-    max_dice = 20
-    min_dice = 6
-    dvec = list(range(min_dice, max_dice+1))
-    qvec = []
-
-    for n in dvec:
-        q = 1 - 6*math.pow(5/6,n) + 15*math.pow(4/6,n) - 20*math.pow(3/6,n) + 15*math.pow(2/6,n) + 6*math.pow(1/6,n)
-        qvec.append(q)
-
-    return dvec, qvec
-
-def plot_results(dvec, qvec):
-    plt.plot(dvec, qvec)
-    plt.xlabel("dice rolled")
-    plt.ylabel("seq probability")
-    plt.title("seq: 1,2")
-    plt.legend(["Analytic Results"])
-    plt.show()
-
-if __name__ == "__main__":
-    dvec, qvec = compute_m_2()
-    plot_results(dvec, qvec)
+    return qvec, dvec

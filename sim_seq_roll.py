@@ -178,14 +178,15 @@ class DiceSim:
         return seq_prob
 
 def main():
-    ########################################################################
-    # Main
-    ########################################################################
-
-    # Estimate the probability of rolling a sequence
-    dvec = list(range(0, 21))
+    # Simulate the probability of rolling a sequence
     trials = 100000
-    seq = list(range(1, 3))
+    seq_start = 1
+    seq_end = 2
+    min_dice = 0
+    max_dice = 21
+
+    dvec = list(range(min_dice, max_dice))
+    seq = list(range(seq_start, seq_end+1))
     sim = DiceSim(trials, seq, dvec)
     _ = sim.run_sim()
 
