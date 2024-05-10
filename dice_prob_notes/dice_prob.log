@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.3.15)  9 MAY 2024 20:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.3.15)  9 MAY 2024 20:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -724,7 +724,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 225--227
 File: figs/full_compare_analytic_sim.png Graphic file (type png)
 <use figs/full_compare_analytic_sim.png>
 Package pdftex.def Info: figs/full_compare_analytic_sim.png  used on input line
- 237.
+ 238.
 (pdftex.def)             Requested size: 270.3012pt x 202.73483pt.
 [4 <./figs/compare_analytic_sim.png> <./figs/full_compare_analytic_sim.png>]
 (./dice_prob.aux)
@@ -740,10 +740,10 @@ Package rerunfilecheck Info: File `dice_prob.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 16962 strings out of 475735
- 276291 string characters out of 5784786
+ 16964 strings out of 475735
+ 276284 string characters out of 5784786
  1869759 words of memory out of 5000000
- 37442 multiletter control sequences out of 15000+600000
+ 37444 multiletter control sequences out of 15000+600000
  529175 words of font info for 95 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,9n,79p,519b,439s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -755,10 +755,10 @@ f-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmsy8.pfb>
-Output written on dice_prob.pdf (4 pages, 255300 bytes).
+Output written on dice_prob.pdf (4 pages, 255331 bytes).
 PDF statistics:
- 121 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
+ 123 PDF objects out of 1000 (max. 8388607)
+ 92 compressed objects within 1 object stream
  34 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
