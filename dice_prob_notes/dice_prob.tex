@@ -13,20 +13,18 @@
 \usepackage{verbatim}
 %\usepackage{subfig}
 \usepackage{mathtools}
-\usepackage{mathdefs}
 \usepackage{placeins}
 \usepackage{float}
 
 \usepackage{amsthm}
 \usepackage{graphicx}
 %\usepackage{subfigure}
-\usepackage{mathdefs}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{bm}
 \usepackage{bbm}
-\usepackage{kbordermatrix}
-\usepackage{mathdefs}
+%\usepackage{kbordermatrix}
+%\usepackage{mathdefs}
 \usepackage{mathrsfs}
 \usepackage{multirow}
 
@@ -203,14 +201,6 @@ P(A_n \cap B_n) &= P(A_n) - P(\neg B_n) + P(\neg A_n \cap \neg B_n)\\
 \end{align}
 and as $n\to\infty$, $P(A_n \cap B_n) \to 1$ as expected.\\
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figs/compare_analytic_sim.png}
-    \caption{}
-    \label{fig:compare_analytic_sim}
-\end{figure}
-\Cref{fig:compare_analytic_sim} compares the analytic solution given by \cref{eq:A_and_B_sol} with the simulated results. As expected they are similar.\\
-
 Can the solution above be generalized to the case of a length $m$ sequence? Lets first consider the case where $m=3$. In this case, by induction from \cref{eq:reduced_A_and_B} we write,\\
 
 \begin{align}
@@ -220,6 +210,15 @@ P(A_n \cap B_n \cap C_n)    &= P(A_n) - P(\neg B_n) - P(\neg C_n)\\
                             &= 1 - 3\left(\frac{5}{6}\right)^n + 3\left(\frac{4}{6}\right)^n - \left(\frac{3}{6}\right)^n
 \label{eq:A_and_B_and_C_sol}
 \end{align}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figs/compare_analytic_sim.png}
+    \caption{Plot of \cref{eq:A_and_B_and_C_sol}}
+    \label{fig:compare_analytic_sim}
+\end{figure}
+\Cref{fig:compare_analytic_sim} compares the analytic solution given by \cref{eq:A_and_B_and_C_sol} with the simulated results. As expected they are similar.\\
+
+
 Now we want an equation expressing the probability of rolling the sequence of dice $1$ to $m$ where $m\in\{1,2,3,4,5,6\}$. Given $n\geq m$ lets define the events
 \begin{equation*}
 A_{n,i} \text{: $i$ appears in a roll of $n$ dice.}
